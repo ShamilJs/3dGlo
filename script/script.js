@@ -57,7 +57,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		const handlerMenu = () => {
 			menu.classList.toggle('active-menu');
 		};
-		
+
 		btnMenu.addEventListener('click', handlerMenu);
 		closeBtn.addEventListener('click', handlerMenu);
 		menuItems.forEach((item) => item.addEventListener('click', handlerMenu));
@@ -110,5 +110,22 @@ window.addEventListener('DOMContentLoaded', function(){
 	};
 	togglePopup();
 
+	const smoothDocument = () => {
+		const anchors = document.querySelectorAll('a[href*="#"]');
+		
+		anchors.forEach((item) => {
+			item.addEventListener('click', (event) => {
+				event.preventDefault();
+				const blockID = item.getAttribute('href').substr(1);
+				if(blockID !== 'close'){
+					document.getElementById(blockID).scrollIntoView({
+					   	behavior: 'smooth',
+					   	block: 'start'
+			    	});
+				} 
+			});
+		});
+	};
+	smoothDocument();
 });
 

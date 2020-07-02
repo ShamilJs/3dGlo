@@ -56,9 +56,9 @@ window.addEventListener('DOMContentLoaded', function(){
 		};
 		document.body.addEventListener('click', (event) => {
 			let target = event.target;
-			if(target.closest('.menu') || target.closest('.close-btn') || 
-				target.closest('menu ul>li')) {
-				handlerMenu();
+			if(target.closest('.menu') || target.closest('.close-btn') || target.closest('menu ul>li') || 
+				(!target.closest('.active-menu') && document.querySelector('.active-menu'))) {
+					handlerMenu();
 			}
 		});
 	};

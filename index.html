@@ -412,7 +412,75 @@
 		</div>
 	</div>
 </div>
-
+<script src="/plagins/validator/validator.js"></script>
+<script>
+	const validOne = new Validator ({
+			selector: '#form1',
+			pattern: {
+				name: /^[а-яА-ЯЁё]+$/,
+			},
+			method: {
+				'form1-name': [
+					['noEmpty'],
+					['pattern', 'name']],
+				'form1-phone': [
+					['noEmpty'],
+					['pattern', 'phone']
+				],
+				'form1-email': [
+					['noEmpty'],
+					['pattern', 'email']
+				]
+			}
+		});
+		validOne.init();
+		const validTwo = new Validator ({
+			selector: '#form2',
+			pattern: {
+				name: /^[а-яА-ЯЁё]+$/,
+				message: /^[а-яА-ЯЁё]+$/,
+			},
+			method: {
+				'form2-name': [
+					['noEmpty'],
+					['pattern', 'name']],
+				'form2-phone': [
+					['noEmpty'],
+					['pattern', 'phone']
+				],
+				'form2-email': [
+					['noEmpty'],
+					['pattern', 'email']
+				],
+				'form2-message': [
+					['noEmpty'],
+					['pattern', 'message']
+				],
+			}
+		});
+		validTwo.init();
+		const validThree = new Validator ({
+			selector: '#form3',
+			pattern: {
+				name: /^[а-яА-ЯЁё]+$/,
+			},
+			method: {
+				'form3-name': [
+					['noEmpty'],
+					['pattern', 'name']],
+				'form3-phone': [
+					['noEmpty'],
+					['pattern', 'phone']
+				],
+				'form3-email': [
+					['noEmpty'],
+					['pattern', 'email']
+				]
+			}
+		});
+		validThree.init();
+</script>
 <script src="script/script.js" ></script>
 </body>
+
 </html>

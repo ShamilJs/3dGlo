@@ -284,10 +284,10 @@ window.addEventListener('DOMContentLoaded', () => {
 		const iterateValue = () => {
 			const requestId = requestAnimationFrame(iterateValue);
 			if (sum < Math.floor(total)) {
-				sum += 5;
+				sum += 10;
 				totalValue.textContent = sum;
 			} else if  (sum > Math.floor(total)) {
-				sum -= 5;
+				sum -= 10;
 				totalValue.textContent = sum;
 			} else {
 				cancelAnimationFrame(requestId);
@@ -309,6 +309,8 @@ window.addEventListener('DOMContentLoaded', () => {
 			}
 			if (typeValue && squareValue) {
 				total = price * typeValue * squareValue * countValue * dayValue;
+			} else {
+				total = 0;
 			}
 			iterateValue();
 		};

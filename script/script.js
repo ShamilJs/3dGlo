@@ -343,30 +343,32 @@ window.addEventListener('DOMContentLoaded', () => {
 	};
 	ourTeam();
 
+
 	const sendForm = () => {
+		const load = document.createElement('div');
+		load.innerHTML = `<hr/><hr/><hr/><hr/>`;
+		load.classList.add('load');
+
 		const errorMessage = 'Что-то пошло не так...',
-			loadMessage = 'Загрузка...',
 			successMessage = 'Спасибо! Мы скоро свяжемся с Вами!';
 		const body = {};
 
-		const validation = () => {
-			const forms = document.querySelectorAll('form');
-			forms.forEach(form => {
-				form.querySelectorAll('input').forEach(elem => {
-					elem.addEventListener('input', (event) => {
-						if (event.target.classList.contains('form-phone')) {
-							elem.value = elem.value.replace(/^[^+\d]*(\+|\d)|\D/g, '$1');
-						} else if (!event.target.classList.contains('form-email')) {
-							elem.value = elem.value.replace(/[^а-я]/gi, '');
-						}
-					});
+
+		const validation = (form, statusMessage) => {
+			form.querySelectorAll('input').forEach(elem => {
+				elem.addEventListener('input', event => {
+					statusMessage.textContent = '';
+					if (event.target.classList.contains('form-phone')) {
+						elem.value = elem.value.replace(/^[^+\d]*(\+|\d)|\D/g, '$1');
+					} else if (!event.target.classList.contains('form-email')) {
+						elem.value = elem.value.replace(/[^а-я]/gi, '');
+					}
 				});
 			});
 		};
-		validation();
+		
 
 		const postData = (body, outputData, errorData) => {
-
 			const request = new XMLHttpRequest();
 			request.addEventListener('readystatechange', () => {
 				if (request.readyState !== 4) {
@@ -374,8 +376,10 @@ window.addEventListener('DOMContentLoaded', () => {
 				}
 				if (request.status === 200) {
 					outputData();
+					load.remove();
 				} else {
 					errorData(request.status);
+					load.remove();
 				}
 			});
 			request.open('POST', './server.php');
@@ -383,22 +387,18 @@ window.addEventListener('DOMContentLoaded', () => {
 			request.send(JSON.stringify(body));
 		};
 
-		const forms = document.querySelectorAll('form');
 
+		const forms = document.querySelectorAll('form');
 		forms.forEach(form => {
 			const statusMessage = document.createElement('div');
 			statusMessage.style.cssText = 'font-size: 2rem; color: red';
-
+			validation(form, statusMessage);
 			form.addEventListener('submit', event => {
 				event.preventDefault();
 				form.appendChild(statusMessage);
-				statusMessage.textContent = loadMessage;
+				form.appendChild(load);
 
 				const formData = new FormData(form);
-				form.querySelectorAll('input').forEach(elem => {
-					elem.value = '';
-				});
-
 				formData.forEach((item, index) => {
 					body[index] = item;
 				});
@@ -407,6 +407,9 @@ window.addEventListener('DOMContentLoaded', () => {
 				}, error => {
 					statusMessage.textContent = errorMessage;
 					console.log(error);
+				});
+				form.querySelectorAll('input').forEach(elem => {
+					elem.value = '';
 				});
 
 			});

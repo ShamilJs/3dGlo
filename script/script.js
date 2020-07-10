@@ -342,5 +342,76 @@ window.addEventListener('DOMContentLoaded', () => {
 		});
 	};
 	ourTeam();
+
+	const sendForm = () => {
+		const errorMessage = 'Что-то пошло не так...',
+			loadMessage = 'Загрузка...',
+			successMessage = 'Спасибо! Мы скоро свяжемся с Вами!';
+		const body = {};
+
+		const validation = () => {
+			const forms = document.querySelectorAll('form');
+			forms.forEach(form => {
+				form.querySelectorAll('input').forEach(elem => {
+					elem.addEventListener('input', (event) => {
+						if (event.target.classList.contains('form-phone')) {
+							elem.value = elem.value.replace(/^[^+\d]*(\+|\d)|\D/g, '$1');
+						} else if (!event.target.classList.contains('form-email')) {
+							elem.value = elem.value.replace(/[^а-я]/gi, '');
+						}
+					});
+				});
+			});
+		};
+		validation();
+
+		const postData = (body, outputData, errorData) => {
+
+			const request = new XMLHttpRequest();
+			request.addEventListener('readystatechange', () => {
+				if (request.readyState !== 4) {
+					return;
+				}
+				if (request.status === 200) {
+					outputData();
+				} else {
+					errorData(request.status);
+				}
+			});
+			request.open('POST', './server.php');
+			request.setRequestHeader('Content-Type', 'application/json');
+			request.send(JSON.stringify(body));
+		};
+
+		const forms = document.querySelectorAll('form');
+
+		forms.forEach(form => {
+			const statusMessage = document.createElement('div');
+			statusMessage.style.cssText = 'font-size: 2rem; color: red';
+
+			form.addEventListener('submit', event => {
+				event.preventDefault();
+				form.appendChild(statusMessage);
+				statusMessage.textContent = loadMessage;
+
+				const formData = new FormData(form);
+				form.querySelectorAll('input').forEach(elem => {
+					elem.value = '';
+				});
+
+				formData.forEach((item, index) => {
+					body[index] = item;
+				});
+				postData(body, () => {
+					statusMessage.textContent = successMessage;
+				}, error => {
+					statusMessage.textContent = errorMessage;
+					console.log(error);
+				});
+
+			});
+		});
+	};
+	sendForm();
 });
 

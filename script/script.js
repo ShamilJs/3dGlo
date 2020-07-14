@@ -48,7 +48,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		};
 		idInterval = setInterval(updateClock, 1000);
 	};
-	countTimer('13 july 2020');
+	countTimer('15 july 2020');
 
 	// меню
 	const toggleMenu = () => {
@@ -323,7 +323,6 @@ window.addEventListener('DOMContentLoaded', () => {
 				countSum();
 			}
 		});
-
 	};
 	calculator(100);
 
@@ -342,5 +341,74 @@ window.addEventListener('DOMContentLoaded', () => {
 		});
 	};
 	ourTeam();
+
+
+	const sendForm = () => {
+		const load = document.createElement('div');
+		load.innerHTML = `<hr/><hr/><hr/><hr/>`;
+		load.classList.add('load');
+
+		const errorMessage = 'Что-то пошло не так...',
+			successMessage = 'Спасибо! Мы скоро свяжемся с Вами!';
+		const body = {};
+
+		const validation = (form, statusMessage) => {
+			form.querySelectorAll('input').forEach(elem => {
+				elem.addEventListener('input', event => {
+					statusMessage.textContent = '';
+					if (event.target.classList.contains('form-phone')) {
+						elem.value = elem.value.replace(/^[^+\d]*(\+|\d)|\D/g, '$1');
+					} else if (!event.target.classList.contains('form-email')) {
+						elem.value = elem.value.replace(/[^а-я ]/gi, '');
+					}
+				});
+			});
+		};
+
+		const postData = body => {
+			return fetch('./server.php', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(body)
+			});
+		};
+
+		const forms = document.querySelectorAll('form');
+		forms.forEach(form => {
+			const statusMessage = document.createElement('div');
+			statusMessage.style.cssText = 'font-size: 2rem; color: red';
+			validation(form, statusMessage);
+			form.addEventListener('submit', event => {
+				event.preventDefault();
+				form.appendChild(statusMessage);
+				form.appendChild(load);
+
+				const formData = new FormData(form);
+				formData.forEach((item, index) => {
+					body[index] = item;
+				});
+
+				postData(body)
+				.then(response => {
+					if (response.status !== 200) {
+						throw new Error('Что-то пошло не так...');
+					}
+					statusMessage.textContent = successMessage;
+					load.remove();
+				})
+				.catch(error => {
+					statusMessage.textContent = error;
+					load.remove();
+					console.log(error);
+				});
+				form.querySelectorAll('input').forEach(elem => {
+					elem.value = '';
+				});
+			});
+		});
+	};
+	sendForm();
 });
 

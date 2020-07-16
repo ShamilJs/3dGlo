@@ -18,3 +18,33 @@
   50%{transform:translate(160%, 160%)}
   75%{transform:translate(0, 160%)}
 }
+
+.modal__dialog__new {
+	z-index: 10;
+  border: solid 1rem;
+  position: fixed;
+  max-width: 400px;
+  height: 70px;
+  background-color: #fff;
+  width: 100%;
+  left: 0;
+  top: 10px;
+  bottom: 0;
+  right: 0;
+  border-bottom-right-radius: 1em; 
+  border-top-right-radius: 1em; 
+
+}
+
+.modal-news {
+  display: none;
+}
+
+.modal__title {
+  text-align: center;
+  font-size: 16px;
+}
+
+.title-document__header_bold {
+  font-weight: 900;
+}

@@ -48,7 +48,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		};
 		idInterval = setInterval(updateClock, 1000);
 	};
-	countTimer('15 july 2020');
+	countTimer('20 july 2020');
 
 	// меню
 	const toggleMenu = () => {
@@ -257,9 +257,7 @@ window.addEventListener('DOMContentLoaded', () => {
 				startSlide();
 			}
 		});
-
 		startSlide(1500);
-
 	};
 	slider();
 
@@ -281,6 +279,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			totalValue = document.getElementById('total');
 		let sum = 0,
 			total = 0;
+
 		const iterateValue = () => {
 			const requestId = requestAnimationFrame(iterateValue);
 			if (sum < Math.floor(total)) {
@@ -315,7 +314,6 @@ window.addEventListener('DOMContentLoaded', () => {
 			iterateValue();
 		};
 
-
 		calcBlock.addEventListener('change', event => {
 			const target = event.target;
 			if (target === calcType || target === calcSquare ||
@@ -326,7 +324,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	};
 	calculator(100);
 
-	// наша команда
+	// наша команда--> смена карточек
 	const ourTeam = () => {
 		const commandPhoto = document.querySelectorAll('.command__photo');
 		commandPhoto.forEach(item => {
@@ -342,14 +340,36 @@ window.addEventListener('DOMContentLoaded', () => {
 	};
 	ourTeam();
 
-
+	// Отправка данных с форм
 	const sendForm = () => {
 		const load = document.createElement('div');
 		load.innerHTML = `<hr/><hr/><hr/><hr/>`;
 		load.classList.add('load');
 
-		const errorMessage = 'Что-то пошло не так...',
-			successMessage = 'Спасибо! Мы скоро свяжемся с Вами!';
+		const newModalView = (arg, error) => {
+			let decriment = 1;
+			const modalNew = document.getElementById('send-finaly');
+			modalNew.classList.toggle('modal-news');
+			const animeMessage = () => {
+				decriment = decriment - 0.005;
+				const requestId = requestAnimationFrame(animeMessage);
+				modalNew.style.opacity = decriment;
+				if (decriment < 0) {
+					cancelAnimationFrame(requestId);
+				}
+			};
+			animeMessage();
+
+			if (arg === 0) {
+				modalNew.innerHTML = `<div class="modal__title">
+					Спасибо за обращение к нам! <br> Менеджер свяжется
+			        с Вами в ближайшее время</div> `;
+			} else {
+				modalNew.innerHTML = `<div class="modal__title">
+					${error}</div>`;
+			}
+		};
+
 		const body = {};
 
 		const validation = (form, statusMessage) => {
@@ -357,9 +377,14 @@ window.addEventListener('DOMContentLoaded', () => {
 				elem.addEventListener('input', event => {
 					statusMessage.textContent = '';
 					if (event.target.classList.contains('form-phone')) {
-						elem.value = elem.value.replace(/^[^+\d]*(\+|\d)|\D/g, '$1');
+						maskPhone('.form-phone');
 					} else if (!event.target.classList.contains('form-email')) {
 						elem.value = elem.value.replace(/[^а-я ]/gi, '');
+						if (event.target.getAttribute('name') === "user_name") {
+							elem.setAttribute('maxlength', '20');
+						} else {
+							elem.setAttribute('maxlength', '150');
+						}
 					}
 				});
 			});
@@ -390,22 +415,25 @@ window.addEventListener('DOMContentLoaded', () => {
 					body[index] = item;
 				});
 
+
 				postData(body)
 				.then(response => {
 					if (response.status !== 200) {
 						throw new Error('Что-то пошло не так...');
 					}
-					statusMessage.textContent = successMessage;
-					load.remove();
+					newModalView(0);
 				})
 				.catch(error => {
-					statusMessage.textContent = error;
+					newModalView(1, error);
+				})
+				.finally(() => {
 					load.remove();
-					console.log(error);
+					form.querySelectorAll('input').forEach(elem => {
+						elem.value = '';
+					});
+					setTimeout(newModalView, 5000);
 				});
-				form.querySelectorAll('input').forEach(elem => {
-					elem.value = '';
-				});
+				
 			});
 		});
 	};

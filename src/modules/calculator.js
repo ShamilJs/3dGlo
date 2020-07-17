@@ -19,10 +19,10 @@
 		const iterateValue = () => {
 			const requestId = requestAnimationFrame(iterateValue);
 			if (sum < Math.floor(total)) {
-				sum += 10;
+				sum += 20;
 				totalValue.textContent = sum;
 			} else if  (sum > Math.floor(total)) {
-				sum -= 10;
+				sum -= 20;
 				totalValue.textContent = sum;
 			} else {
 				cancelAnimationFrame(requestId);

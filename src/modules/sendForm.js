@@ -38,6 +38,7 @@ import maskPhone from './maskPhone';
 					statusMessage.textContent = '';
 					if (event.target.classList.contains('form-phone')) {
 						maskPhone('.form-phone');
+						elem.setAttribute('minlength', '12');
 					} else if (!event.target.classList.contains('form-email')) {
 						elem.value = elem.value.replace(/[^а-я ]/gi, '');
 						if (event.target.getAttribute('name') === "user_name") {
@@ -45,6 +46,9 @@ import maskPhone from './maskPhone';
 						} else {
 							elem.setAttribute('maxlength', '150');
 						}
+					}
+					if (event.target.classList.contains('form-email')) {
+						elem.value = elem.value.replace(/[^A-Za-z0-9_\-\.@]/gi, '');
 					}
 				});
 			});

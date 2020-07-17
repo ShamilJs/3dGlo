@@ -21,7 +21,7 @@
 			step1 = 10;
 			popup.style.display = 'none';
 			popup.style.opacity = 0;
-			popupContent.style.left = 0;
+			popupContent.style.left = '15%';
 		};
 
 		popupBtn.forEach(item => {
@@ -30,6 +30,8 @@
 					openPopup();
 				} else {
 					popup.style.display = 'block';
+					popup.style.opacity = 1;
+					// popupContent.style.left = 0;
 				}
 			});
 		});

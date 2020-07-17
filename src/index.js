@@ -5,15 +5,18 @@ import "@babel/polyfill";
 import 'nodelist-foreach-polyfill';
 import elementClosest from 'element-closest';
 elementClosest(window);
-import "es6-promise/auto";
-// require('es6-promise/auto');
+
+
+import "es6-promise";
+
 import "fetch-polyfill";
+
 import "formdata-polyfill";
+
+
 import 'mdn-polyfills/Node.prototype.append';
 import smoothscroll from 'smoothscroll-polyfill';
 smoothscroll.polyfill();
-import 'whatwg-fetch';
-import 'promise-polyfill/src/polyfill';
 
 import countTimer from './modules/countTimer';
 import toggleMenu from './modules/toggleMenu';

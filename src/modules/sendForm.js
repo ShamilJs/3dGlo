@@ -39,16 +39,18 @@ import maskPhone from './maskPhone';
 					if (event.target.classList.contains('form-phone')) {
 						maskPhone('.form-phone');
 						elem.setAttribute('minlength', '12');
-					} else if (!event.target.classList.contains('form-email')) {
-						elem.value = elem.value.replace(/[^а-я ]/gi, '');
-						if (event.target.getAttribute('name') === "user_name") {
-							elem.setAttribute('maxlength', '20');
-						} else {
-							elem.setAttribute('maxlength', '150');
-						}
 					}
 					if (event.target.classList.contains('form-email')) {
 						elem.value = elem.value.replace(/[^A-Za-z0-9_\-\.@]/gi, '');
+					}
+					if (event.target.getAttribute('name') === "user_name") {
+						elem.value = elem.value.replace(/[^а-я ]/gi, '');
+						elem.setAttribute('maxlength', '20');
+					}
+
+					if (event.target.getAttribute('name') === "user_message") {
+						elem.value = elem.value.replace(/[a-z]/gi, '');
+						elem.setAttribute('maxlength', '150');
 					}
 				});
 			});

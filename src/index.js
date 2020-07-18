@@ -2,21 +2,29 @@
 'use strict';
 
 import "@babel/polyfill";
-import 'nodelist-foreach-polyfill';
 import elementClosest from 'element-closest';
 elementClosest(window);
-
-
 import "es6-promise";
-
 import "fetch-polyfill";
-
 import "formdata-polyfill";
-
-
 import 'mdn-polyfills/Node.prototype.append';
+import 'mdn-polyfills/Node.prototype.remove';
+import 'nodelist-foreach-polyfill';
+import 'promise-polyfill';
 import smoothscroll from 'smoothscroll-polyfill';
 smoothscroll.polyfill();
+import 'whatwg-fetch';
+
+
+
+
+
+
+
+
+
+
+
 
 import countTimer from './modules/countTimer';
 import toggleMenu from './modules/toggleMenu';

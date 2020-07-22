@@ -35,7 +35,7 @@ import slider from './modules/slider';
 import calculator from './modules/calculator';
 import ourTeam from './modules/ourTeam';
 import sendForm from './modules/sendForm';
-
+import sliderCarousel from './modules/sliderСarousel';
 
 
 	// Timer
@@ -56,3 +56,23 @@ import sendForm from './modules/sendForm';
 	ourTeam();
 	// Отправка данных с форм
 	sendForm();
+
+	const carousel = new sliderCarousel({ main: '.companies-wrapper',
+										wrap: '.companies-hor',
+										slidesToShow: 4,
+										infinity: true,
+										responsive: [{
+											breakpoint: 1024,
+											slidesToShow: 3
+										},
+										{
+											breakpoint: 768,
+											slidesToShow: 2
+										},
+										{
+											breakpoint: 576,
+											slidesToShow: 1
+										}
+									]
+									 });
+	carousel.init();
